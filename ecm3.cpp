@@ -78,3 +78,5 @@ void loop() {
     sendDataToSheet();
     count = 0
   }
+
+} 
