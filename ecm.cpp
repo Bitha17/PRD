@@ -5,8 +5,8 @@
 EnergyMonitor emon1;
 
 // Replace with your SSID and Password
-const char* ssid     = "TbtVIB";
-const char* password = "Gen1:2728";
+const char* ssid     = "Lantai 3 Hotspot";
+const char* password = "lantaitiga";
 
 String server = "http://maker.ifttt.com";
 String eventName = "ctsensor_readings";
@@ -60,8 +60,18 @@ void sendDataToSheet(void)
 }
 
 void loop() {
-  value2 = emon1.calcIrms(1480);
-  value1 = value2 * 220.0 * 10;
+  float I_total = 0; 
+  float P_total = 0;
+  for (int i = 0; i < 1800; i++){
+    float I = emon1.calcIrms(1480);
+    float P = I * 220.0;
+    delay(1000);
+    I_total = I_total + I;
+    P_total = P_total + P;
+  }
+
+  value2 = I_total / 1800.0;
+  value1 = P_total; 
   
   Serial.print("Values are ");
   Serial.print(value1);
@@ -69,5 +79,5 @@ void loop() {
   Serial.print(value2);
   Serial.print(' ');
   sendDataToSheet();
-  delay(10000);
+  
 }
